@@ -1,11 +1,21 @@
 #!/bin/bash
 #usage: get_result.sh DATA.csv  //the DATA.csv from insight.
-rm -rf result
+
+#remove temp_data
+rm -rf result/
 rm -rf result.csv
 mkdir result
 
 #split_data will unify the tests to singleSN file
 ./split_data.sh $1
+
+#unit_test folder will reset while split_data.sh
+
+if [ $2 ];then
+    RESULT_FILE=$2
+else
+    RESULT_FILE=result.csv
+fi
 
 for i in $(ls unit_test)
 do
@@ -22,5 +32,7 @@ RESULT=$(awk -F, '
 
 FINAL_RESULT=$(tail -1 result/$i | awk -F, '{print $4}')
 
-echo $SN,$FINAL_RESULT,$TESTMODE,$RESULT >> result.csv
+echo $SN,$FINAL_RESULT,$TESTMODE,$RESULT >> $RESULT_FILE
 done
+
+echo "The results are DONE!"

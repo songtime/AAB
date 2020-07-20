@@ -2,6 +2,8 @@
 FILEPATH=$1
 #insight rest recored has RETEST filed 
 #RETEST will combie FAIL-FAIL-PASS to one RETEST 
+
+
 mypath=$(cd $(dirname $0)&&pwd)
 echo $mypath
 
@@ -19,9 +21,9 @@ awk -F, '$4 ~ "PASS|FAIL|RETEST" {print $1}' $1| sort | uniq
 }
 
 retest(){
-for i in $(cat FAIL.txt)
+for i in $(cat FAIL_SN.txt)
 do
-	if grep $i PASS.txt &> /dev/null
+	if grep $i PASS_SN.txt &> /dev/null
 	then
 	   echo $i
 	fi   
@@ -36,6 +38,8 @@ split_test(){
     SN=$1
     file=$2
     awk -F, -v SN=$SN '$1 ~ SN {print}' $file
+    #array by test time
+    sort -t, -k5 $file -o $file
 }
 
 main(){
@@ -48,10 +52,10 @@ main(){
 	uniq_all_SN $FILEPATH > ALL_SN.txt
 	retest > RETEST_SN.txt
 	
-	PASS=$(cat PASS.txt | wc -l)
-	FAIL=$(cat FAIL.txt | wc -l)
-	ALL=$(cat ALL.txt | wc -l)
-	RETEST=$(cat RETEST.txt | wc -l)
+	PASS=$(cat PASS_SN.txt | wc -l)
+	FAIL=$(cat FAIL_SN.txt | wc -l)
+	ALL=$(cat ALL_SN.txt | wc -l)
+	RETEST=$(cat RETEST_SN.txt | wc -l)
 	
 	echo "PASS:$PASS,RETEST_PASS:$RETEST,ALL_TEST:$ALL"
 
@@ -64,12 +68,12 @@ main(){
     # fi
     rm -rf unit_test
     mkdir unit_test
-    
+
     for i in $(cat ALL_SN.txt)
     do
         split_test $i $FILEPATH > unit_test/$i.csv
     done
-
+  
     
 }
 
