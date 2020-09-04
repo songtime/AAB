@@ -1,7 +1,17 @@
 #!/bin/bash
-#usage: get_result.sh DATA.csv  //the DATA.csv from insight.
+#usage: get_result.sh DATA.csv outdata.csv //the DATA.csv from insight.
+#if outdata.csv not defined,filename "result.csv" will set default.
+
+#INPUT: DATA.csv // from insight test detail,need in a special period.such as 12Hours ? Unforturenatley,Boss&PM demand it to 36Hours.
+
+
+#OUTPUT:xxx.csv //Show as AAB.
 
 #remove temp_data
+
+#ON or OFF
+TESTTIME=OFF
+
 rm -rf result/
 
 mkdir result
@@ -34,9 +44,16 @@ TESTMODE=$(awk -F, '{printf $6}' result/$i)
 
 #$3:testtime
 
+
+if [[ $TESTTIME == "ON" ]];then
 RESULT=$(awk -F, '
 {printf $6"_"$4"_"$5"_"$3","}
 ' result/$i)
+else
+RESULT=$(awk -F, '
+{printf $6"_"$4"_"$5","}
+' result/$i)
+fi
 
 FINAL_RESULT=$(tail -1 result/$i | awk -F, '{print $4}')
 

@@ -1,3 +1,15 @@
+#!/bin/bash
+
+#INPUT:unit_test/SN.csv
+#data_format:
+
+
+#OUTPUT:stdout:print the AAB test
+#C02017500AZLXQH1K,QSMC_QF-3FRMT-13_21_TEST1_1,2020-08-17 18:30:57,PASS,,A
+#C02017500AZLXQH1K,QSMC_QF-3FRMT-13_19_TEST1_1,2020-08-21 11:02:50,PASS,,B
+
+
+
 #recive a Unit test
 #show it's AAB result
 

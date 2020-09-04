@@ -1,6 +1,15 @@
 #!/bin/bash
 FILEPATH=$1
-#insight rest recored has RETEST filed 
+#INPUT:data.csv //csv file from instight test detail.
+#IN-data-format:C02017501E3LYGG1S,J132A,MLB,FAIL,2020-08-17 02:47:11,2020-08-17 02:49:54,QSMC_QF-3FRMT-13_22_TEST1,testdevice,2,8059.RearLeft.CIOEyeGpsTest,,,"DP SINK Eye Measurement per Ridge only Failed: code = 1 ",1.0,,,N/A,,,,
+
+
+#OUTPUT:
+#console:Test counts:
+#OUT-data:unit_test/SN.csv -->one SN, one file to record.File for show_AAB
+
+#Mark:
+#insight test recored has RETEST filed
 #RETEST will combie FAIL-FAIL-PASS to one RETEST 
 
 
@@ -57,7 +66,7 @@ main(){
 	ALL=$(cat ALL_SN.txt | wc -l)
 	RETEST=$(cat RETEST_SN.txt | wc -l)
 	
-	echo "PASS:$PASS,RETEST_PASS:$RETEST,ALL_TEST:$ALL"
+	echo "RETEST_PASS:$RETEST,PASS:$PASS,ALL_TEST:$ALL"
 
     #now split the test record to files.
     #one SN use 1 file
