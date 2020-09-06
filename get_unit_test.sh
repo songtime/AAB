@@ -1,5 +1,5 @@
 #!/bin/bash
-FILEPATH=$1
+DATA_FILE=$1
 #INPUT:data.csv //csv file from instight test detail.
 #IN-data-format:C02017501E3LYGG1S,J132A,MLB,FAIL,2020-08-17 02:47:11,2020-08-17 02:49:54,QSMC_QF-3FRMT-13_22_TEST1,testdevice,2,8059.RearLeft.CIOEyeGpsTest,,,"DP SINK Eye Measurement per Ridge only Failed: code = 1 ",1.0,,,N/A,,,,
 
@@ -42,13 +42,17 @@ done
 #generate TRUE_FAIL.txt?
 #TRUE=ALL-PASS
 
-split_test(){
+
+
+generate_unit_test(){
 #print 1 single SN's test record
     SN=$1
     file=$2
     awk -F, -v SN=$SN '$1 ~ SN {print}' $file
-    #array by test time
-    sort -t, -k5 $file -o $file
+
+#危险代码,篡改了源数据文件
+    #sort -t use"," as seprator, -k filed 5.
+#   sort -t, -k5 $file -o $file
 }
 
 main(){
@@ -56,9 +60,9 @@ main(){
 #FAIL_SN.txt SN which has fail/retest record.
 #
     cd $mypath
-	uniq_pass_SN $FILEPATH > PASS_SN.txt
-	uniq_fail_SN $FILEPATH > FAIL_SN.txt
-	uniq_all_SN $FILEPATH > ALL_SN.txt
+	uniq_pass_SN $DATA_FILE > PASS_SN.txt
+	uniq_fail_SN $DATA_FILE > FAIL_SN.txt
+	uniq_all_SN $DATA_FILE > ALL_SN.txt
 	retest > RETEST_SN.txt
 	
 	PASS=$(cat PASS_SN.txt | wc -l)
@@ -75,12 +79,18 @@ main(){
     # else
     #     mkdir unit_test
     # fi
+
+    #reset each run
     rm -rf unit_test
     mkdir unit_test
 
+#一个SN一个unit_test/SN.csv 
     for i in $(cat ALL_SN.txt)
     do
-        split_test $i $FILEPATH > unit_test/$i.csv
+        generate_unit_test $i $DATA_FILE > unit_test/$i.csv
+    #对unit_test/SN.csv 进行时间排序.
+    #字符串先后完全是时间先后??
+        sort -t, -k5 unit_test/$i.csv -o unit_test/$i.csv
     done
   
     

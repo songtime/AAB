@@ -16,10 +16,10 @@ rm -rf result/
 
 mkdir result
 
-#split_data will unify the tests to singleSN file
-./split_data.sh $1
+#get_unit_test will unify the tests to singleSN file
+./get_unit_test.sh $1
 
-#unit_test folder will reset while split_data.sh
+#unit_test folder will reset while get_unit_test.sh
 
 if [ $2 ];then
     RESULT_FILE=$2
@@ -29,7 +29,7 @@ fi
 
 for i in $(ls unit_test)
 do
-    ./show_AAB.sh unit_test/$i > result/$i
+    ./mark_AAB.sh unit_test/$i > result/$i
 done
 
 
@@ -60,4 +60,5 @@ FINAL_RESULT=$(tail -1 result/$i | awk -F, '{print $4}')
 echo $SN,$FINAL_RESULT,$TESTMODE,$RESULT >> $RESULT_FILE
 done
 
-echo "The results are DONE!"
+
+echo -e "\033[32m 数据完成! \033[0m"
