@@ -12,9 +12,11 @@ DATA_FILE=$1
 #insight test recored has RETEST filed
 #RETEST will combie FAIL-FAIL-PASS to one RETEST 
 
+#本脚本也会显示复测率到标准输出:
+#复测率正常计算公式: Retest_PASS/All Input, 但被要求使用Retest_PASS/PASS 计算从而扩大复测率数值.
 
 mypath=$(cd $(dirname $0)&&pwd)
-echo $mypath
+#echo $mypath
 
 
 uniq_pass_SN(){
@@ -70,7 +72,11 @@ main(){
 	ALL=$(cat ALL_SN.txt | wc -l)
 	RETEST=$(cat RETEST_SN.txt | wc -l)
 	
-	echo "RETEST_PASS:$RETEST,PASS:$PASS,ALL_TEST:$ALL"
+	RATE=$(echo "$RETEST $PASS" | awk '{printf "%f",$1/$2}')
+	
+#Show Retest Data to terminal:
+
+	echo "$DATA_FILE,RETEST_PASS,$RETEST,PASS,$PASS,ALL_TEST,$ALL,RATE,$RATE"
 
     #now split the test record to files.
     #one SN use 1 file

@@ -60,5 +60,5 @@ FINAL_RESULT=$(tail -1 result/$i | awk -F, '{print $4}')
 echo $SN,$FINAL_RESULT,$TESTMODE,$RESULT >> $RESULT_FILE
 done
 
-
-echo -e "\033[32m 数据完成! \033[0m"
+#show it to err msg.
+echo -e "\033[32m 数据完成! \033[0m" >&2

@@ -6,8 +6,8 @@
 IN_FILE=$1
 sed '/Serial Number/d' $IN_FILE > test.data
 
-# rm -rf ./day-data/
-# mkdir ./day-data
+rm -rf ./day-data/
+mkdir ./day-data
 
 awk  '
 BEGIN{
