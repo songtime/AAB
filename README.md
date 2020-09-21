@@ -9,5 +9,5 @@
 > 以及每天的AAB数据
 
 # 其他
-- show_AAB.sh :辅助文件
-- split_data.sh:辅助文件
+- get_unit_test.sh  :辅助文件
+- mark_AAB.sh :辅助文件
